@@ -23,10 +23,12 @@ public class Music {
         int rightMove = 1;
         int rightMoveIndex = startIndex-1;
         int numberOfElements = musicList.size();
+
         while (numberOfElements > 0) {
 
             if (leftMoveIndex > musicList.size() - 1) {
                 leftMoveIndex = (leftMoveIndex+1) % musicList.size();
+
             }
 
             if (rightMoveIndex <= -1) {
