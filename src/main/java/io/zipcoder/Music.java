@@ -1,51 +1,65 @@
 package io.zipcoder;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Music {
 
 
 
-    private String[] playList;
+    private final String[] playList;
 
     public Music(String[] playList) {
         this.playList = playList;
     }
 
     public Integer selection( Integer startIndex, String selection) {
-        Integer forward = 0;
-        Integer backward = 0;
-        Integer minButtonPresses = 0;
-        for (int i = startIndex; i < getPlayList().length; i++) { //will stop adding to counter when found
-            if (!selection.equals(getPlayList()[i])) {
-                forward++;
+        List<String> musicList = Arrays.asList(playList);
+        
+        int result = 0;
+
+        int leftMove = 1;
+        int leftMoveIndex = startIndex+1;
+        int rightMove = 1;
+        int rightMoveIndex = startIndex-1;
+        int numberOfElements = musicList.size();
+        while (numberOfElements > 0) {
+
+            if (leftMoveIndex > musicList.size() - 1) {
+                leftMoveIndex = (leftMoveIndex+1) % musicList.size();
             }
-        }
-        for (int j = startIndex ; j >= 0; j--) {
-            if (!selection.equals(getPlayList()[j])) { // will stop adding to counter when string found
-                backward++;
+
+            if (rightMoveIndex <= -1) {
+                rightMoveIndex = musicList.size() - 1;
             }
+
+            if (musicList.get(leftMoveIndex).equals(selection)) {
+                if (leftMove <= rightMove) {
+                    result = leftMove;
+                    break;
+                }
+            }
+            else {
+                leftMove++;
+                leftMoveIndex++;
+            }
+
+            if (musicList.get(rightMoveIndex).equals(selection)) {
+                if (rightMove <= leftMove) {
+                    result = rightMove;
+                    break;
+                }
+            }
+            else {
+                rightMove++;
+                rightMoveIndex--;
+            }
+
+            numberOfElements--;
         }
 
-        if (forward < backward) {
-            minButtonPresses = forward;
-
-        } else if (forward == backward) {
-
-            minButtonPresses = forward;
-
-        } else {
-            minButtonPresses = backward;
-
-        }
-
-
-        return minButtonPresses;
-
-
-  }
-
-
-
-    public String[] getPlayList() {
-        return playList;
+   return  result;
     }
+
+
 }
